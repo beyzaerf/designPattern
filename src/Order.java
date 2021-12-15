@@ -36,14 +36,15 @@ public class Order {
         this.cancelCommand = cancelCommand;
     }
 
-    public Order(int orderId, User sender, Location destination, List<Item> items, ShippingBehavior shippingBehavior) {
+    public Order(int orderId, User sender, List<Item> items, ShippingBehavior shippingBehavior) {
         this.orderId = orderId;
         this.sender = sender;
-        this.destination = destination;
+        this.destination = sender.getAddress();
         this.items = items;
-        this.totalWeight = items.stream().filter(item -> item.getWeight() > 0).mapToInt(Item::getWeight).sum();
-        this.totalPrice = items.stream().filter(item -> item.getPrice() > 0).mapToInt(Item::getPrice).sum();
         this.shippingBehavior = shippingBehavior;
+        this.totalWeight = items.stream().filter(item -> item.getWeight() > 0).mapToInt(Item::getWeight).sum();
+        int extraFee = this.shippingBehavior.getExtraFee(this.totalWeight);
+        this.totalPrice = items.stream().filter(item -> item.getPrice() > 0).mapToInt(Item::getPrice).sum() + extraFee;
         this.currentStatus = OrderStatus.RECEIVED;
     }
 }

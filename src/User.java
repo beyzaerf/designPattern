@@ -1,11 +1,11 @@
 public class User {
     private int userId;
     private String name;
-    private String address;
+    private Location address;
     private String phoneNo;
     private String email;
 
-    public User(int userId, String name, String address, String phoneNo, String email) {
+    public User(int userId, String name, Location address, String phoneNo, String email) {
         this.address = address;
         this.email = email;
         this.name = name;
@@ -14,11 +14,11 @@ public class User {
 
     }
     public int getUserId() { return userId; }
-    public String getAddress() { return address; }
+    public Location getAddress() { return address; }
     public String getEmail() { return email; }
     public String getName() { return name; }
     public String getPhoneNo() { return phoneNo; }
-    public void setAddress(String address) { this.address = address; }
+    public void setAddress(Location address) { this.address = address; }
     public void setEmail(String email) { this.email = email; }
     public void setName(String name) { this.name = name; }
     public void setPhoneNo(String phoneNo) { this.phoneNo = phoneNo; }

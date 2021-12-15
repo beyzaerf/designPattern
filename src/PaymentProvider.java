@@ -7,6 +7,7 @@ public class PaymentProvider {
     }
     public void makePayment() {
         this.paymentCommand.pay();
+        System.out.println("You have paid " + order.getTotalPrice() + " TL.");
     }
     public void cancelOrder() {
         this.cancelCommand.cancel();
@@ -70,16 +71,16 @@ class CancelBehaviorTwo extends PaymentBehaviors implements ICancelCommand {
 class YapiKrediPaymentProvider extends PaymentProvider {
     public YapiKrediPaymentProvider(Order order) {
         super(order);
-        this.paymentCommand = new PaymentBehaviorThree(this.order);
-        this.cancelCommand = new CancelBehaviorOne(this.order);
+        this.setPaymentCommand(new PaymentBehaviorThree(this.order));
+        this.setCancelCommand(new CancelBehaviorOne(this.order));
         System.out.println("Thanks for choosing Yapı Kredi.");
     }
 }
 class ZiraatBankPaymentProvider extends PaymentProvider {
     public  ZiraatBankPaymentProvider(Order order){
         super(order);
-        this.paymentCommand = new PaymentBehaviorTwo(this.order);
-        this.cancelCommand = new CancelBehaviorTwo(this.order);
+        this.setPaymentCommand(new PaymentBehaviorOne(this.order));
+        this.setCancelCommand(new CancelBehaviorTwo(this.order));
         System.out.println("Thanks for choosing Ziraat.");
     }
 }

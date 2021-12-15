@@ -4,25 +4,21 @@ import java.util.List;
 public class DesignPatterns {
 
     public static void main(String[] args) {
-        User beyza = new User(1,"Beyza", "this is my address", "123", "email");
+        Location home = new Location(67.8, 53.7);
+        User beyza = new User(1,"Beyza", home, "123", "email");
 
-        Item item1 = new Item("rat", 20,2);
-        Item item2 = new Item("soul",11,29);
+        Item item1 = new Item("earphones", 20,2);
+        Item item2 = new Item("water",10,28);
 
         List<Item> items = new ArrayList<>();
         items.add(item1);
         items.add(item2);
 
-        Location destination = new Location(13.2, 60.8);
-
-        Order order = new Order(1, beyza, destination, items,new ArasCargoBehavior());
+        Order order = new Order(1, beyza, items,new ArasCargoBehavior());
         YapiKrediPaymentProvider yapiKrediPaymentProvider = new YapiKrediPaymentProvider(order);
         System.out.println(order.trackOrder());
         order.shippingBehavior.ship(order);
         System.out.println(order.trackOrder());
-
-        PaymentBehaviorThree paymentBehaviorThree = new PaymentBehaviorThree(order);
-        yapiKrediPaymentProvider.setPaymentCommand(paymentBehaviorThree);
         yapiKrediPaymentProvider.makePayment();
 
     }
