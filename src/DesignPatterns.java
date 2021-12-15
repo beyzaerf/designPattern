@@ -16,14 +16,14 @@ public class DesignPatterns {
         Location destination = new Location(13.2, 60.8);
 
         Order order = new Order(1, beyza, destination, items,new ArasCargoBehavior());
+        YapiKrediPaymentProvider yapiKrediPaymentProvider = new YapiKrediPaymentProvider(order);
+        System.out.println(order.trackOrder());
         order.shippingBehavior.ship(order);
-        System.out.println(order.getCurrentStatus());
+        System.out.println(order.trackOrder());
 
-        PayCommand payCommand = new PayCommand(order);
-        CancelCommand cancelCommand = new CancelCommand(order);
-        order.setPayCommand(payCommand);
-        order.setCancelCommand(cancelCommand);
-        order.cancelOrder();
+        PaymentBehaviorThree paymentBehaviorThree = new PaymentBehaviorThree(order);
+        yapiKrediPaymentProvider.setPaymentCommand(paymentBehaviorThree);
+        yapiKrediPaymentProvider.makePayment();
 
     }
 }

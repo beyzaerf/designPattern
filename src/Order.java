@@ -9,16 +9,17 @@ public class Order {
     private OrderStatus currentStatus;
     private int totalPrice;
     ShippingBehavior shippingBehavior;
-    PayCommand payCommand;
-    CancelCommand cancelCommand;
+    IPaymentCommand paymentCommand;
+    ICancelCommand cancelCommand;
 
     public int getTotalPrice() { return totalPrice; }
     public double getTotalWeight() { return totalWeight; }
     public int getOrderId() { return orderId; }
     public List<Item> getItems() { return items; }
     public Location getDestination() { return destination; }
-    public String getCurrentStatus() { return "Your order is currently " + currentStatus + "."; }
+    public String trackOrder() { return "Your order is currently " + currentStatus + "."; }
     public User getSender() { return sender; }
+    public ShippingBehavior getShippingBehavior() { return shippingBehavior; }
     public void setCurrentStatus(OrderStatus currentStatus) { this.currentStatus = currentStatus; }
     public void setDestination(Location destination) { this.destination = destination; }
     public void setItems(List<Item> items) { this.items = items; }
@@ -27,28 +28,23 @@ public class Order {
     public void setTotalPrice(int totalPrice) { this.totalPrice = totalPrice; }
     public void setTotalWeight(double totalWeight) { this.totalWeight = totalWeight; }
 
-    public void setPayCommand(PayCommand pay) {
-        payCommand = pay;
+    public void setPaymentCommand(IPaymentCommand paymentCommand) {
+        this.paymentCommand = paymentCommand;
     }
-    public void setCancelCommand(CancelCommand cancel) {
-        cancelCommand = cancel;
+
+    public void setCancelCommand(ICancelCommand cancelCommand) {
+        this.cancelCommand = cancelCommand;
     }
+
     public Order(int orderId, User sender, Location destination, List<Item> items, ShippingBehavior shippingBehavior) {
         this.orderId = orderId;
         this.sender = sender;
         this.destination = destination;
         this.items = items;
-        this.totalWeight = items.stream().filter(item -> item.getWeight() > 0).mapToInt(Item::getWeight).sum();;
+        this.totalWeight = items.stream().filter(item -> item.getWeight() > 0).mapToInt(Item::getWeight).sum();
         this.totalPrice = items.stream().filter(item -> item.getPrice() > 0).mapToInt(Item::getPrice).sum();
         this.shippingBehavior = shippingBehavior;
         this.currentStatus = OrderStatus.RECEIVED;
-    }
-
-    public void makePayment() {
-        payCommand.execute();
-    }
-    public void cancelOrder() {
-        cancelCommand.execute();
     }
 }
 enum OrderStatus {

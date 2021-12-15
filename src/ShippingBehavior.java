@@ -1,24 +1,41 @@
 public interface ShippingBehavior {
     void ship(Order order);
-    void charge(Order order);
+    void chargeExtraFees();
 }
-// ASK GÜNDÜZ!!! There is code duplication here.
-class ArasCargoBehavior implements ShippingBehavior {
+class CommonStrategy implements ShippingBehavior {
+    int acceptedWeight = 20;
+    int extraFee = 3;
     public void ship(Order order) {
         order.setCurrentStatus(OrderStatus.SHIPPED);
-        System.out.println("This order is being shipped by Aras Cargo.");
-    }
-    public void charge(Order order) {
-        System.out.println("The shipping cost is 12 Turkish Lira.");
-    }
-}
+        System.out.println("This order is being shipped by " + order.shippingBehavior.toString());
 
-class YurticiCargoBehavior implements ShippingBehavior {
-    public void ship(Order order) {
-        order.setCurrentStatus(OrderStatus.SHIPPED);
-        System.out.println("This order is being shipped by Yurtiçi Cargo.");
+        if (order.getTotalWeight() > acceptedWeight)
+            order.getShippingBehavior().chargeExtraFees();
     }
-    public void charge(Order order) {
-        System.out.println("The shipping cost is 10 Turkish Lira.");
+    public void chargeExtraFees() {
+        System.out.println("You will be charged " + extraFee + " TL for exceeding the weight limit.");
+    }
+}
+class ArasCargoBehavior extends CommonStrategy {
+    public void chargeExtraFees() {
+        super.acceptedWeight = 30;
+        super.extraFee = 5;
+    }
+    public String toString() {
+        return "Aras Cargo.";
+    }
+}
+class YurticiCargoBehavior extends CommonStrategy {
+    public void chargeExtraFees() {
+        super.acceptedWeight = 35;
+        super.extraFee = 10;
+    }
+    public String toString() {
+        return "Yurtiçi Cargo.";
+    }
+}
+class PttCargoBehavior extends CommonStrategy {
+    public String toString() {
+        return "PTT Cargo.";
     }
 }
